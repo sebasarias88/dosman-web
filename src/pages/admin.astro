@@ -1,0 +1,13 @@
+---
+import Base from '@/layouts/Base.astro'
+import AdminApp from '@/components/admin/AdminApp'
+---
+
+<Base title="Panel del negocio" description="Panel de pedidos de Dosman." noindex bare>
+  <AdminApp client:only="react">
+    <div slot="fallback" class="grid min-h-dvh place-items-center" aria-busy="true">
+      <span class="sr-only" role="status">Cargando…</span>
+      <div class="skeleton h-72 w-80"></div>
+    </div>
+  </AdminApp>
+</Base>

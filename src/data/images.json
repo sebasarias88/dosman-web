@@ -1,0 +1,101 @@
+{
+  "_note": "Demo photos from Unsplash (free to use under the Unsplash License). Replace with the client's own photos before launch. Run `npm run images` to download and optimize them.",
+  "images": {
+    "cholao-clasico": {
+      "unsplash": "B2JFNoufa-c",
+      "alt": "Vaso de hielo raspado con fresas, arándanos y hierbabuena"
+    },
+    "cholao-dosman": {
+      "unsplash": "g9jFg1utz1w",
+      "alt": "Copa de helado con fruta y crema"
+    },
+    "cholao-verde": {
+      "unsplash": "Q6uTgpjlE7A",
+      "alt": "Vaso con helado de pistacho"
+    },
+    "salpicon": {
+      "unsplash": "XSBqqYfSZMo",
+      "alt": "Fruta tropical picada en un plato"
+    },
+    "ensalada-frutas": {
+      "unsplash": "BrTNwFbRA_0",
+      "alt": "Tazón de ensalada de frutas con crema"
+    },
+    "mango-crema": {
+      "unsplash": "Z_tLJseBEOg",
+      "alt": "Mango en cubos con crema en un vaso de vidrio"
+    },
+    "copa-frutas": {
+      "unsplash": "HlNcigvUi4Q",
+      "alt": "Tazones con fruta fresca picada"
+    },
+    "fresas-crema": {
+      "unsplash": "lK1Q5RyD6tc",
+      "alt": "Fresas picadas sobre crema en frascos de vidrio"
+    },
+    "fresas-oreo": {
+      "unsplash": "W2d_FskKkpw",
+      "alt": "Fresas, galleta y crema en un vaso de vidrio"
+    },
+    "fresas-helado": {
+      "unsplash": "BjpdHJrW2hM",
+      "alt": "Crema sirviéndose sobre un tazón de fresas"
+    },
+    "malteada-fresa": {
+      "unsplash": "wBIeri0fLuw",
+      "alt": "Dos malteadas de fresa en vasos de vidrio"
+    },
+    "malteada-oreo": {
+      "unsplash": "WiWnYSShNnY",
+      "alt": "Malteada de galleta Oreo con crema"
+    },
+    "malteada-chocolate": {
+      "unsplash": "-BPEE8pG1eU",
+      "alt": "Malteada de chocolate en vaso de vidrio"
+    },
+    "batido-fresa": {
+      "unsplash": "J_1c4uu0h_Y",
+      "alt": "Batido de fresa en vaso de vidrio"
+    },
+    "limonada-natural": {
+      "unsplash": "p5EiqkBYIEE",
+      "alt": "Limonada en vaso junto a limones partidos"
+    },
+    "limonada-hierbabuena": {
+      "unsplash": "lo_udD1o_lk",
+      "alt": "Frasco de limonada con hierbabuena y hielo"
+    },
+    "soda-limon": {
+      "unsplash": "WKCjwrtjhVg",
+      "alt": "Vaso con hielo y rodaja de limón"
+    },
+    "jugo-mango": {
+      "unsplash": "KlVIYmGVRQ8",
+      "alt": "Batido de mango en vaso junto a un mango"
+    },
+    "iced-latte": {
+      "unsplash": "L-sm1B4L1Ns",
+      "alt": "Latte frío en vaso de vidrio"
+    },
+    "cafe-frio-leche": {
+      "unsplash": "_tSgUmeYMm8",
+      "alt": "Café frío con leche en vaso alto"
+    },
+    "cafe-origen": {
+      "unsplash": "Tz6004NuNL8",
+      "alt": "Taza de café con galletas"
+    },
+    "cappuccino": {
+      "unsplash": "3q9FzbvWf9w",
+      "alt": "Cappuccino con arte en la espuma"
+    },
+    "latte": {
+      "unsplash": "shzri9u4big",
+      "alt": "Latte con arte en la espuma en taza blanca"
+    },
+    "mocaccino": {
+      "unsplash": "4MCJpRp_xbw",
+      "alt": "Café con espuma y dibujo de hoja"
+    }
+  }
+}

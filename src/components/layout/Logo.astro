@@ -1,0 +1,16 @@
+---
+type Props = { variant?: 'horizontal' | 'vertical' | 'isotype'; class?: string }
+const { variant = 'horizontal', class: className = '' } = Astro.props
+const sources = {
+  horizontal: { src: '/brand/logo-horizontal-current.svg', ratio: 'aspect-[770/221]' },
+  vertical: { src: '/brand/logo-vertical-current.svg', ratio: 'aspect-[425/344]' },
+  isotype: { src: '/brand/isotype-current.svg', ratio: 'aspect-[172/221]' },
+}
+const { src, ratio } = sources[variant]
+---
+
+<span
+  role="img"
+  aria-label="Dosman · Cholao & Coffee"
+  class:list={['brand-mask block', ratio, className]}
+  style={`mask-image:url(${src});-webkit-mask-image:url(${src})`}></span>

@@ -1,0 +1,57 @@
+---
+import { store } from '@/data/store'
+import { Icon } from '@/components/ui/Icon'
+const year = new Date().getFullYear()
+---
+
+<footer class="bg-fg text-white">
+  <div class="mx-auto grid max-w-7xl gap-10 px-4 pt-14 pb-10 sm:px-6 md:grid-cols-[1.3fr_1fr_1fr]">
+    <div>
+      <span role="img" aria-label="Dosman · Cholao & Coffee" class="footer-logo block aspect-[770/221] h-12 bg-white"></span>
+      <p class="mt-5 max-w-xs text-white/70">Cholaos, frutas y café del Quindío. Pide en línea y te lo llevamos, o recógelo sin hacer fila.</p>
+      <a href="/menu" class="btn btn-primary mt-6">Ver el menú</a>
+    </div>
+    <div>
+      <h2 class="font-display text-xl font-extrabold">Horario</h2>
+      <dl class="mt-4 space-y-3">
+        {
+          store.hoursLabel.map((h) => (
+            <div>
+              <dt class="text-sm text-white/60">{h.label}</dt>
+              <dd class="font-semibold">{h.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+    <div>
+      <h2 class="font-display text-xl font-extrabold">Contacto</h2>
+      <ul class="mt-4 space-y-3">
+        <li>
+          <a class="flex items-center gap-2 font-semibold hover:text-mango" href={`https://wa.me/${store.whatsapp}`} rel="noopener" target="_blank">
+            <Icon name="whatsapp" className="size-5" /> WhatsApp {store.whatsappDisplay}
+          </a>
+        </li>
+        <li>
+          <a class="flex items-center gap-2 font-semibold hover:text-mango" href={`https://instagram.com/${store.instagram}`} rel="noopener" target="_blank">
+            <Icon name="heart" className="size-5" /> Instagram @{store.instagram}
+          </a>
+        </li>
+        <li class="flex items-start gap-2 text-white/70"><Icon name="pin" className="mt-0.5 size-5 shrink-0" /> {store.address}, {store.city}</li>
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-white/10">
+    <div class="mx-auto flex max-w-7xl flex-col gap-1 px-4 pt-5 pb-28 text-sm text-white/55 sm:flex-row sm:justify-between sm:px-6">
+      <p>© {year} {store.legalName}</p>
+      <p>Versión demo: precios, dirección, teléfono y fotos (Unsplash) son de ejemplo.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer-logo {
+    mask: url(/brand/logo-horizontal-current.svg) left center / contain no-repeat;
+    -webkit-mask: url(/brand/logo-horizontal-current.svg) left center / contain no-repeat;
+  }
+</style>

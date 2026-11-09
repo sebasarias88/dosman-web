@@ -1,0 +1,143 @@
+---
+import '@/styles/global.css'
+import Header from '@/components/layout/Header.astro'
+import Footer from '@/components/layout/Footer.astro'
+import CartDrawer from '@/components/cart/CartDrawer'
+import FloatingActions from '@/components/cart/FloatingActions'
+import { store } from '@/data/store'
+
+type Props = {
+  title: string
+  description: string
+  /** Pages like checkout, tracking and admin are not for search engines */
+  noindex?: boolean
+  bare?: boolean
+  /** Hide the floating cart bar (checkout and tracking already show the order) */
+  hideCartBar?: boolean
+}
+
+const { title, description, noindex = false, bare = false, hideCartBar = false } = Astro.props
+const canonical = new URL(Astro.url.pathname, Astro.site).toString()
+const fullTitle = title === store.name ? `${store.name} · ${store.tagline} | Pide en línea en ${store.city}` : `${title} | ${store.name}`
+const ogImage = new URL('/og.png', Astro.site).toString()
+
+const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'WebSite', '@id': `${Astro.site}#website`, url: Astro.site?.toString(), name: store.legalName, inLanguage: 'es-CO' },
+    {
+      '@type': 'CafeOrCoffeeShop',
+      '@id': `${Astro.site}#business`,
+      name: store.legalName,
+      url: Astro.site?.toString(),
+      image: ogImage,
+      logo: new URL('/icons/icon-512.png', Astro.site).toString(),
+      telephone: `+${store.whatsapp}`,
+      servesCuisine: ['Cholados', 'Postres', 'Café'],
+      priceRange: '$',
+      hasMenu: new URL('/menu', Astro.site).toString(),
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: store.address,
+        addressLocality: store.city,
+        addressRegion: store.region,
+        addressCountry: store.country,
+      },
+      openingHoursSpecification: store.hours.map((h) => ({
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: h.days.map((d) => days[d]),
+        opens: h.open,
+        closes: h.close,
+      })),
+    },
+  ],
+}
+---
+
+<!doctype html>
+<html lang="es-CO" data-mode="cold">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- The cup animation follows the visitor's last filter (hot = cappuccino) -->
+    <script is:inline>
+      try {
+        if (localStorage.getItem('dosman:mood') === 'hot') document.documentElement.dataset.mode = 'hot'
+      } catch (e) {}
+    </script>
+
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_CO" />
+    <meta property="og:site_name" content={store.legalName} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <slot name="head" />
+  </head>
+  <body class="min-h-dvh">
+    <a href="#main" class="sr-only z-50 rounded-full bg-fg px-4 py-2 text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3">
+      Saltar al contenido
+    </a>
+
+    <div
+      id="offline-banner"
+      hidden
+      role="status"
+      class="fixed inset-x-0 top-0 z-[60] bg-fg px-4 py-2.5 text-center text-sm font-semibold text-white"
+    >
+      Estás sin conexión. Puedes ver el menú, pero para pedir necesitas internet.
+    </div>
+
+    {!bare && <Header />}
+    <main id="main">
+      <slot />
+    </main>
+    {!bare && <Footer />}
+    {!bare && <CartDrawer client:idle />}
+    {!bare && <FloatingActions client:idle hideCartBar={hideCartBar} />}
+
+    <script>
+      import { $mood, applyMood } from '@/lib/mode'
+      applyMood($mood.get())
+
+      // Offline notice + block internal navigation while there is no network.
+      const banner = document.getElementById('offline-banner')
+      const sync = () => {
+        if (banner) banner.hidden = navigator.onLine
+      }
+      window.addEventListener('online', sync)
+      window.addEventListener('offline', sync)
+      sync()
+      document.addEventListener('click', (e) => {
+        if (navigator.onLine) return
+        const a = (e.target as Element).closest('a')
+        if (a && a.origin === location.origin && !a.hash) {
+          e.preventDefault()
+          banner?.animate([{ opacity: 0.4 }, { opacity: 1 }], { duration: 300 })
+        }
+      })
+
+      if ('serviceWorker' in navigator && import.meta.env.PROD) {
+        window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}))
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,152 @@
+---
+import Base from '@/layouts/Base.astro'
+import MoodTabs from '@/components/home/MoodTabs'
+import FeaturedGrid from '@/components/home/FeaturedGrid'
+import CupBuild from '@/components/home/CupBuild.astro'
+import { ProductImage } from '@/components/ui/ProductImage'
+import { Icon } from '@/components/ui/Icon'
+import { categories, productById } from '@/data/menu'
+import { store } from '@/data/store'
+import { formatCOP } from '@/lib/format'
+
+const hero = productById.get('cholao-dosman')!
+const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${store.address}, ${store.mapsQuery}`)}`
+
+const steps = [
+  { icon: 'sparkle', tint: 'bg-tint-fresa', title: 'Elige y personaliza', text: 'Tamaño, sabor del helado y adiciones. Ves el precio exacto mientras eliges.' },
+  { icon: 'bike', tint: 'bg-tint-mango', title: 'Dinos cómo lo recibes', text: 'A domicilio, lo recoges en el local o te lo llevamos a tu banca del parque.' },
+  { icon: 'card', tint: 'bg-tint-menta', title: 'Paga como prefieras', text: 'Efectivo, transferencia o en línea con tarjeta, PSE o Nequi.' },
+  { icon: 'clock', tint: 'bg-tint-lila', title: 'Síguelo en vivo', text: 'Te mostramos cuándo lo preparamos y cuándo va en camino.' },
+] as const
+---
+
+<Base title="Dosman" description={`Pide cholaos, fresas con crema, malteadas y café del Quindío en línea. Domicilios en ${store.city}, recoge en el local o te lo llevamos al parque.`}>
+  <!-- HERO -->
+  <section class="mx-auto grid max-w-7xl gap-8 px-4 pt-6 pb-12 sm:px-6 sm:pt-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-14 lg:pt-16 lg:pb-20">
+    <div class="min-w-0">
+      <h1 class="font-display text-[clamp(2.35rem,7.5vw,4.75rem)] leading-[0.98] font-extrabold">¿Qué se te antoja hoy?</h1>
+      <p class="mt-3 max-w-md text-base text-muted sm:mt-4 sm:text-lg">Cholaos, fresas, malteadas y café del Quindío. Te lo llevamos, lo recoges o te lo entregamos en el parque.</p>
+
+      <form action="/menu" method="get" role="search" class="mt-5 sm:mt-7">
+        <label class="flex items-center gap-3 rounded-[18px] bg-surface px-4 py-1.5 focus-within:ring-2 focus-within:ring-fg/10 sm:max-w-md">
+          <Icon name="search" className="size-5 text-muted" />
+          <span class="sr-only">Buscar en el menú</span>
+          <input type="search" name="q" placeholder="Cholao, fresas, café…" class="min-w-0 flex-1 bg-transparent py-2.5 text-base outline-none placeholder:text-muted" />
+        </label>
+      </form>
+
+      <MoodTabs client:load className="mt-4" />
+
+      <nav aria-label="Categorías" class="no-scrollbar -mx-4 mt-6 flex gap-4 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0">
+        {
+          categories.map((c) => {
+            const cover = productById.get(c.cover)!
+            return (
+              <a href={`/menu#cat-${c.id}`} class="group flex w-[68px] shrink-0 flex-col items-center gap-1.5 text-center">
+                <span class={`block size-[68px] overflow-hidden rounded-full p-[3px] ring-2 ring-transparent transition group-hover:ring-accent ${c.tint}`}>
+                  <ProductImage imageKey={cover.image} name={c.name} sizes="68px" className="size-full rounded-full" />
+                </span>
+                <span class="text-xs leading-tight font-bold">{c.name}</span>
+              </a>
+            )
+          })
+        }
+      </nav>
+    </div>
+
+    <!-- hero product -->
+    <a
+      href={`/menu?p=${hero.id}`}
+      class="group relative grid grid-cols-[1fr_auto] gap-4 rounded-[28px] bg-tint-fresa p-4 sm:p-5 lg:grid-cols-1 lg:gap-0 lg:p-0"
+      aria-label={`${hero.name}, ${formatCOP(hero.price)}. Elegir y agregar`}
+    >
+      <div class="order-1 flex flex-col justify-between py-1 lg:order-2 lg:p-7">
+        <div>
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-xs font-extrabold text-accent">
+            <span class="crown block aspect-[155/74] h-2.5 bg-accent" aria-hidden="true"></span>
+            El de la corona
+          </span>
+          <p class="mt-2.5 font-display text-[26px] leading-none font-extrabold sm:text-3xl lg:text-4xl">{hero.name}</p>
+          <p class="mt-1.5 text-[13px] leading-snug text-muted sm:text-sm lg:max-w-sm lg:text-base">Doble fruta, helado, queso, arequipe y barquillo.</p>
+        </div>
+        <p class="price mt-3 text-lg font-extrabold lg:text-xl">{formatCOP(hero.price)}</p>
+      </div>
+      <div class="order-2 w-[132px] sm:w-[170px] lg:order-1 lg:w-full">
+        <ProductImage imageKey={hero.image} name={hero.name} sizes="(min-width: 1024px) 560px, 170px" className="aspect-[4/5] h-full w-full rounded-[22px] lg:aspect-[16/12] lg:rounded-b-none lg:rounded-t-[28px]" priority />
+      </div>
+      <span class="absolute right-3 bottom-3 grid size-12 place-items-center rounded-full bg-accent text-white ring-4 ring-tint-fresa transition-transform group-hover:scale-110 lg:right-6 lg:bottom-6 lg:size-14" aria-hidden="true">
+        <Icon name="plus" className="size-6" strokeWidth={2.6} />
+      </span>
+    </a>
+  </section>
+
+  <!-- MOST ORDERED -->
+  <section class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 sm:pb-24" aria-labelledby="fav-title">
+    <div class="mb-4 flex items-baseline justify-between gap-4 sm:mb-6">
+      <h2 id="fav-title" class="font-display text-2xl font-extrabold sm:text-4xl">Los más pedidos</h2>
+      <a href="/menu" class="text-sm font-bold text-accent hover:text-accent-hover sm:text-base">Ver menú</a>
+    </div>
+    <FeaturedGrid client:visible />
+  </section>
+
+  <!-- SIGNATURE: the cup that fills while you scroll -->
+  <CupBuild />
+
+  <!-- HOW TO ORDER -->
+  <section id="como-pedir" class="mx-auto max-w-7xl scroll-mt-24 px-4 py-16 sm:px-6 sm:py-24" aria-labelledby="how-title">
+    <div class="max-w-xl">
+      <h2 id="how-title" class="font-display text-3xl font-extrabold sm:text-5xl">Pedir toma un minuto</h2>
+      <p class="mt-3 text-muted sm:text-lg">Sin llamar y sin esperar a que te contesten. El pedido le llega directo a la cocina.</p>
+    </div>
+    <ol class="mt-8 grid gap-3 sm:mt-10 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
+      {
+        steps.map((s, i) => (
+          <li class={`rounded-[24px] p-5 sm:p-6 ${s.tint}`}>
+            <div class="flex items-center justify-between">
+              <span class="grid size-12 place-items-center rounded-2xl bg-white">
+                <Icon name={s.icon} className="size-6" />
+              </span>
+              <span class="price font-display text-3xl font-extrabold text-fg/15">{i + 1}</span>
+            </div>
+            <h3 class="mt-4 text-lg font-extrabold">{s.title}</h3>
+            <p class="mt-1 text-[15px] text-muted">{s.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+    <a href="/menu" class="btn btn-primary mt-8 w-full sm:w-auto">Empezar mi pedido</a>
+  </section>
+
+  <!-- LOCATION -->
+  <section id="ubicacion" class="mx-auto max-w-7xl scroll-mt-24 px-4 pb-28 sm:px-6 sm:pb-32" aria-labelledby="where-title">
+    <div class="grid gap-6 rounded-[28px] bg-surface p-6 sm:p-10 lg:grid-cols-2 lg:gap-12">
+      <div>
+        <h2 id="where-title" class="font-display text-3xl font-extrabold sm:text-5xl">Pasa por la sede</h2>
+        <p class="mt-4 flex items-start gap-2 text-lg font-semibold"><Icon name="pin" className="mt-0.5 size-5 shrink-0 text-accent" />{store.address}, {store.city}</p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href={mapsUrl} target="_blank" rel="noopener" class="btn btn-dark">Cómo llegar</a>
+          <a href={`https://wa.me/${store.whatsapp}?text=${encodeURIComponent('Hola Dosman, tengo una pregunta.')}`} target="_blank" rel="noopener" class="btn bg-white hover:bg-line">
+            <Icon name="whatsapp" className="size-5 text-[#128C4B]" /> Escribir por WhatsApp
+          </a>
+        </div>
+      </div>
+      <dl class="self-center rounded-[22px] bg-white p-2">
+        {
+          store.hoursLabel.map((h) => (
+            <div class="flex items-center justify-between gap-4 rounded-2xl px-4 py-3.5 odd:bg-surface-2">
+              <dt class="flex items-center gap-2 font-semibold"><Icon name="clock" className="size-4 text-muted" />{h.label}</dt>
+              <dd class="price text-right text-[15px] text-muted">{h.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .crown {
+    mask: url(/brand/crown.svg) center / contain no-repeat;
+    -webkit-mask: url(/brand/crown.svg) center / contain no-repeat;
+  }
+</style>

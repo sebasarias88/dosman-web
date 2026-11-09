@@ -1,0 +1,15 @@
+---
+import Base from '@/layouts/Base.astro'
+import Checkout from '@/components/checkout/Checkout'
+---
+
+<Base title="Terminar pedido" description="Elige cómo recibes tu pedido y cómo pagas." noindex hideCartBar>
+  <Checkout client:only="react">
+    <div slot="fallback" class="mx-auto max-w-3xl space-y-5 px-4 py-14 sm:px-6" aria-busy="true">
+      <span class="sr-only" role="status">Cargando…</span>
+      <div class="skeleton h-16 w-3/4"></div>
+      <div class="skeleton h-40"></div>
+      <div class="skeleton h-56"></div>
+    </div>
+  </Checkout>
+</Base>

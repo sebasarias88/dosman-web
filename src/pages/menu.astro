@@ -1,0 +1,12 @@
+---
+import Base from '@/layouts/Base.astro'
+import MenuBrowser from '@/components/menu/MenuBrowser'
+import { store } from '@/data/store'
+---
+
+<Base
+  title="Menú"
+  description={`Menú de Dosman en ${store.city}: cholaos, salpicón, fresas con crema, malteadas, limonadas y café del Quindío. Pide a domicilio o recoge en el local.`}
+>
+  <MenuBrowser client:load />
+</Base>

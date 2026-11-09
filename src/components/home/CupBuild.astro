@@ -1,0 +1,281 @@
+---
+/**
+ * The signature moment of the site: as the visitor scrolls, the glass fills
+ * layer by layer. In cold mode it builds a cholao, in hot mode a cappuccino.
+ * With "reduce motion" the glass is shown already full and nothing is pinned.
+ */
+const coldSteps = [
+  { title: 'Hielo raspado', text: 'Raspado al momento, fino como nieve. Nunca de bolsa.' },
+  { title: 'Jarabe de la casa', text: 'Lo hacemos nosotros, con fruta de verdad y poca azúcar.' },
+  { title: 'Fruta picada', text: 'Mango, piña, papaya, banano y fresa. Picada el mismo día.' },
+  { title: 'Leche condensada', text: 'Un hilo generoso que baja entre la fruta y el hielo.' },
+  { title: 'Helado y queso', text: 'Una bola del sabor que elijas y queso rallado por encima.' },
+  { title: 'Barquillo', text: 'Para rematar. Y para comerse el helado primero.' },
+]
+const hotSteps = [
+  { title: 'Grano del Quindío', text: 'Café de origen de la región, molido justo antes de servir.' },
+  { title: 'Espresso doble', text: 'Extracción corta, con cuerpo y crema.' },
+  { title: 'Leche texturizada', text: 'Entera, deslactosada o de almendras. Tú decides.' },
+  { title: 'Espuma y cacao', text: 'Una capa espesa de espuma y cacao espolvoreado.' },
+]
+---
+
+<section id="como-se-arma" class="cup-build relative px-3 sm:px-6" aria-labelledby="cup-title">
+  <div class="cup-sticky sticky top-16 flex min-h-[calc(100dvh-4rem)] items-center py-3 sm:top-[72px] sm:min-h-[calc(100dvh-72px)] sm:py-6">
+    <div class="mx-auto grid w-full max-w-7xl items-center gap-6 rounded-[32px] bg-tint-fresa px-5 py-8 sm:px-10 sm:py-12 md:grid-cols-[1fr_1.1fr] md:gap-16 hot:bg-tint-latte">
+      <div class="order-2 md:order-1">
+        <h2 id="cup-title" class="font-display text-[clamp(2rem,5vw,3.75rem)] leading-[1] font-extrabold">
+          <span class="hot:hidden">Así se arma un cholao de verdad</span>
+          <span class="hidden hot:inline">Así se sirve un cappuccino</span>
+        </h2>
+
+        <ol class="steps steps-cold mt-6 space-y-1 hot:hidden" aria-label="Capas del cholao">
+          {
+            coldSteps.map((s, i) => (
+              <li class="step" data-step={i}>
+                <span class="step-n price">{i + 1}</span>
+                <span>
+                  <span class="block text-[17px] font-extrabold">{s.title}</span>
+                  <span class="step-text block">{s.text}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ol>
+        <ol class="steps steps-hot mt-6 hidden space-y-1 hot:block" aria-label="Pasos del cappuccino">
+          {
+            hotSteps.map((s, i) => (
+              <li class="step" data-step={i}>
+                <span class="step-n price">{i + 1}</span>
+                <span>
+                  <span class="block text-[17px] font-extrabold">{s.title}</span>
+                  <span class="step-text block">{s.text}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+
+      <div class="order-1 flex justify-center md:order-2">
+        <svg viewBox="0 0 300 440" class="cup-svg h-[38dvh] max-h-[520px] w-auto md:h-[64dvh]" role="img" aria-label="Vaso llenándose capa por capa">
+          <defs>
+            <clipPath id="cup-inside">
+              <path d="M38 70 H262 L240 410 Q239 420 229 420 H71 Q61 420 60 410 Z"></path>
+            </clipPath>
+            <pattern id="ice-crystals" width="18" height="18" patternUnits="userSpaceOnUse">
+              <circle cx="4" cy="5" r="2.2" fill="#ffffff"></circle>
+              <circle cx="13" cy="12" r="1.6" fill="#ffffff"></circle>
+              <rect x="9" y="2" width="3" height="3" fill="#cfe7ef" transform="rotate(20 10 3)"></rect>
+            </pattern>
+          </defs>
+
+          <!-- COLD: cholao -->
+          <g class="layers-cold hot:hidden">
+            <g clip-path="url(#cup-inside)">
+              <g class="l l0" style="transform-origin: 150px 420px">
+                <rect x="30" y="250" width="240" height="175" fill="#e3f2f7"></rect>
+                <rect x="30" y="250" width="240" height="175" fill="url(#ice-crystals)"></rect>
+              </g>
+              <path class="l l1" style="transform-origin: 150px 420px" d="M30 330 C70 315 90 348 130 330 S200 312 230 332 S262 326 270 320 V425 H30Z" fill="#d80036" opacity="0.6"></path>
+              <g class="l l2" style="transform-origin: 150px 260px">
+                <rect x="30" y="150" width="240" height="110" fill="#ffe9b8"></rect>
+                <rect x="58" y="168" width="26" height="26" rx="4" fill="#ffc21a" transform="rotate(12 71 181)"></rect>
+                <rect x="96" y="196" width="24" height="24" rx="4" fill="#ff8a3d" transform="rotate(-18 108 208)"></rect>
+                <rect x="132" y="162" width="28" height="28" rx="4" fill="#8bc34a" transform="rotate(25 146 176)"></rect>
+                <rect x="172" y="200" width="26" height="26" rx="4" fill="#d80036" transform="rotate(8 185 213)"></rect>
+                <rect x="206" y="170" width="24" height="24" rx="4" fill="#f6e27f" transform="rotate(-10 218 182)"></rect>
+                <rect x="70" y="222" width="22" height="22" rx="4" fill="#d80036" transform="rotate(-25 81 233)"></rect>
+                <rect x="140" y="222" width="24" height="24" rx="4" fill="#ffc21a" transform="rotate(30 152 234)"></rect>
+                <rect x="198" y="226" width="22" height="22" rx="4" fill="#8bc34a" transform="rotate(-6 209 237)"></rect>
+                <rect x="112" y="150" width="20" height="20" rx="4" fill="#ff8a3d" transform="rotate(14 122 160)"></rect>
+              </g>
+              <path class="l l3" style="transform-origin: 150px 140px" d="M30 132 H270 V150 C252 150 250 186 236 186 S222 152 204 156 S190 204 172 200 S160 156 142 158 S124 194 110 190 S96 156 82 160 S66 182 54 176 S40 150 30 152Z" fill="#fff6df"></path>
+            </g>
+            <g class="l l4" style="transform-origin: 150px 140px">
+              <path d="M88 130 C88 60 212 60 212 130 C200 138 196 124 184 136 C172 146 168 128 150 138 C134 146 128 128 114 136 C102 142 98 128 88 130Z" fill="#ffd7e2"></path>
+              <rect x="112" y="84" width="10" height="4" rx="2" fill="#ffc21a" transform="rotate(20 117 86)"></rect>
+              <rect x="140" y="74" width="10" height="4" rx="2" fill="#ffc21a" transform="rotate(-15 145 76)"></rect>
+              <rect x="166" y="88" width="10" height="4" rx="2" fill="#ffc21a" transform="rotate(35 171 90)"></rect>
+              <rect x="128" y="100" width="10" height="4" rx="2" fill="#ffc21a" transform="rotate(-30 133 102)"></rect>
+              <rect x="152" y="104" width="10" height="4" rx="2" fill="#ffc21a" transform="rotate(10 157 106)"></rect>
+              <rect x="184" y="108" width="9" height="4" rx="2" fill="#ffc21a" transform="rotate(-20 188 110)"></rect>
+            </g>
+            <g class="l l5">
+              <g transform="rotate(18 196 60)">
+                <rect x="186" y="-18" width="22" height="130" rx="6" fill="#d9a15b" stroke="var(--color-fg)" stroke-width="3"></rect>
+                <path d="M186 6 L208 -6 M186 30 L208 18 M186 54 L208 42 M186 78 L208 66" stroke="#a8713a" stroke-width="3"></path>
+              </g>
+            </g>
+          </g>
+
+          <!-- HOT: cappuccino -->
+          <g class="layers-hot hidden hot:inline">
+            <g clip-path="url(#cup-inside)">
+              <g class="l l0" style="transform-origin: 150px 420px">
+                <rect x="30" y="360" width="240" height="65" fill="#2b170d"></rect>
+                <circle cx="80" cy="390" r="7" fill="#4a2a17"></circle>
+                <circle cx="150" cy="400" r="7" fill="#4a2a17"></circle>
+                <circle cx="215" cy="388" r="7" fill="#4a2a17"></circle>
+              </g>
+              <rect class="l l1" style="transform-origin: 150px 420px" x="30" y="270" width="240" height="155" fill="#5a321c" opacity="0.92"></rect>
+              <path class="l l2" style="transform-origin: 150px 420px" d="M30 150 C80 140 110 160 150 148 S230 140 270 150 V280 C220 300 180 268 150 286 S70 300 30 280Z" fill="#c8915e"></path>
+              <g class="l l3" style="transform-origin: 150px 150px">
+                <rect x="30" y="70" width="240" height="88" fill="#f3e3cc"></rect>
+                <circle cx="70" cy="140" r="9" fill="#fff7ea"></circle>
+                <circle cx="120" cy="128" r="12" fill="#fff7ea"></circle>
+                <circle cx="190" cy="138" r="10" fill="#fff7ea"></circle>
+                <circle cx="230" cy="124" r="7" fill="#fff7ea"></circle>
+                <circle cx="100" cy="84" r="3" fill="#6b3d22"></circle>
+                <circle cx="140" cy="80" r="3" fill="#6b3d22"></circle>
+                <circle cx="170" cy="92" r="3" fill="#6b3d22"></circle>
+                <circle cx="210" cy="82" r="3" fill="#6b3d22"></circle>
+                <circle cx="120" cy="96" r="2.5" fill="#6b3d22"></circle>
+                <circle cx="190" cy="100" r="2.5" fill="#6b3d22"></circle>
+              </g>
+            </g>
+            <g class="l l3 steam" fill="none" stroke="var(--color-fg)" stroke-width="4" stroke-linecap="round" opacity="0.55">
+              <path d="M110 50 C96 36 124 26 110 10"></path>
+              <path d="M150 54 C136 38 164 26 150 6"></path>
+              <path d="M190 50 C176 36 204 26 190 10"></path>
+            </g>
+          </g>
+
+          <!-- glass outline on top of everything -->
+          <path d="M38 70 H262 L240 410 Q239 420 229 420 H71 Q61 420 60 410 Z" fill="none" stroke="var(--color-fg)" stroke-width="6" stroke-linejoin="round"></path>
+          <path d="M248 120 L232 380" stroke="var(--color-fg)" stroke-width="3" stroke-linecap="round" opacity="0.18"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cup-build {
+    height: 340vh;
+  }
+  :global([data-mode='hot']) .cup-build {
+    height: 260vh;
+  }
+  .step {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 0.75rem;
+    padding: 0.45rem 0;
+    opacity: 0.38;
+    transition: opacity 300ms;
+  }
+  .step.is-active,
+  .step.is-done {
+    opacity: 1;
+  }
+  .step-text {
+    display: none;
+  }
+  .step.is-active .step-text {
+    display: block;
+  }
+  .step-n {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    background: #fff;
+    border-radius: 12px;
+    font-weight: 800;
+  }
+  .step.is-active .step-n,
+  .step.is-done .step-n {
+    background: var(--color-fg);
+    color: #fff;
+  }
+  .step-text {
+    color: var(--color-muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cup-build,
+    :global([data-mode='hot']) .cup-build {
+      height: auto;
+    }
+    .cup-sticky {
+      position: static;
+    }
+    .step {
+      opacity: 1;
+    }
+    .step-text {
+      display: block;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap'
+  import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+  gsap.registerPlugin(ScrollTrigger)
+
+  const section = document.querySelector<HTMLElement>('.cup-build')
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  let trigger: ScrollTrigger | null = null
+
+  function build() {
+    if (!section) return
+    trigger?.kill()
+    const mode = document.documentElement.dataset.mode === 'hot' ? 'hot' : 'cold'
+    const layers = [...section.querySelectorAll<SVGElement>(`.layers-${mode} .l`)]
+    const steps = [...section.querySelectorAll<HTMLElement>(`.steps-${mode} .step`)]
+    const count = steps.length
+
+    if (reduce) {
+      gsap.set(layers, { clearProps: 'all' })
+      return
+    }
+
+    // Group layers by step index (l0, l1, …)
+    const byStep = Array.from({ length: count }, (_, i) => layers.filter((el) => el.classList.contains(`l${i}`)))
+    const tl = gsap.timeline({ paused: true })
+    byStep.forEach((els, i) => {
+      if (mode === 'cold' && i === 5) {
+        tl.fromTo(els, { y: -260, opacity: 0 }, { y: 0, opacity: 1, ease: 'back.out(1.6)', duration: 1 }, i)
+      } else if (mode === 'cold' && i === 4) {
+        tl.fromTo(els, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, ease: 'back.out(1.8)', duration: 1 }, i)
+      } else {
+        tl.fromTo(els, { scaleY: 0, opacity: 0.4 }, { scaleY: 1, opacity: 1, ease: 'power2.out', duration: 1 }, i)
+      }
+    })
+
+    const setActive = (progress: number) => {
+      const current = Math.min(count - 1, Math.floor(progress * count * 1.02))
+      steps.forEach((s, i) => {
+        s.classList.toggle('is-active', i === current)
+        s.classList.toggle('is-done', i < current)
+      })
+    }
+
+    trigger = ScrollTrigger.create({
+      trigger: section,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 0.6,
+      onUpdate: (self) => {
+        tl.progress(self.progress)
+        setActive(self.progress)
+      },
+      onRefresh: (self) => {
+        tl.progress(self.progress)
+        setActive(self.progress)
+      },
+    })
+  }
+
+  build()
+  window.addEventListener('dosman:mode', () => {
+    requestAnimationFrame(() => {
+      build()
+      ScrollTrigger.refresh()
+    })
+  })
+</script>
