@@ -17,7 +17,9 @@ type Props = {
 }
 
 const { title, description, noindex = false, bare = false, hideCartBar = false } = Astro.props
-const canonical = new URL(Astro.url.pathname, Astro.site).toString()
+// Clean URL: "/index.html" → "/", "/menu.html" → "/menu" (the build writes .html files)
+const cleanPath = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/') || '/'
+const canonical = new URL(cleanPath, Astro.site).toString()
 const fullTitle = title === store.name ? `${store.name} · ${store.tagline} | Pide en línea en ${store.city}` : `${title} | ${store.name}`
 const ogImage = new URL('/og.png', Astro.site).toString()
 
