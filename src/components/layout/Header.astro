@@ -2,7 +2,7 @@
 import CartButton from '@/components/cart/CartButton'
 import OpenBadge from './OpenBadge'
 
-const path = Astro.url.pathname
+const path = Astro.url.pathname.replace(/\.html$/, '')
 const links = [
   { href: '/menu', label: 'Menú' },
   { href: '/#como-pedir', label: 'Cómo pedir' },
